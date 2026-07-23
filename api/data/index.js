@@ -26,7 +26,7 @@ async function streamToString(readable) {
 
 // Lista de administradores por username do GitHub (em minúsculas).
 // Para liberar mais pessoas, basta adicionar o username aqui (e no src/index.html).
-const ADMINS = ["danieiribeiro"];
+const ADMINS = ["danieiribeiro", "emaildojonasvs-blip"];
 
 function isAdmin(req) {
   try {

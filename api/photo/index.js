@@ -3,7 +3,7 @@ const { BlobServiceClient } = require("@azure/storage-blob");
 const CONTAINER = "photos";
 const MAX_BYTES = 600 * 1024; // ~600KB já comprimido no cliente
 
-const ADMINS = ["danieiribeiro"];
+const ADMINS = ["danieiribeiro", "emaildojonasvs-blip"];
 
 function isAdmin(req) {
   try {
