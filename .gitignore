@@ -1,0 +1,16 @@
+# Dependências
+node_modules/
+
+# Configurações locais com segredos
+local.settings.json
+.env
+*.local
+
+# Artefatos de build
+bin/
+obj/
+dist/
+
+# Sistema
+.DS_Store
+Thumbs.db

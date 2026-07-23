@@ -1,0 +1,9 @@
+{
+  "name": "pmnh-fut7-api",
+  "version": "1.0.0",
+  "description": "API do portal de ranking do PMNH & Amigos (FUT7)",
+  "main": "data/index.js",
+  "dependencies": {
+    "@azure/storage-blob": "^12.17.0"
+  }
+}

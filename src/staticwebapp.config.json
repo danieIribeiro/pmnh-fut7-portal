@@ -1,0 +1,17 @@
+{
+  "routes": [
+    {
+      "route": "/api/data",
+      "methods": ["POST", "PUT", "PATCH", "DELETE"],
+      "allowedRoles": ["authenticated"]
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/api/*", "/*.{png,jpg,jpeg,gif,svg,ico,css,js,json}"]
+  },
+  "responseOverrides": {
+    "401": { "statusCode": 401 },
+    "403": { "statusCode": 403 }
+  }
+}
