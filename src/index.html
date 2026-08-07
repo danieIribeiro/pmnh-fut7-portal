@@ -1394,6 +1394,7 @@ async function createMatchFromLineup(){
   const date=new Date().toISOString().slice(0,10);
   const m={id:uid(),date,entries,scoreBranco:null,scorePreto:null,pending:true,escalaPub:false,lineup:{teams:lastLineup.teams,formB:lastLineup.formB,formP:lastLineup.formP}};
   db.matches.push(m);
+  escalaViewId=null;craqueViewId=null;
   if(await persist()){
     toast('Partida criada! A escalação está OCULTA até você liberar na aba "Escalação do dia". 🔒',6000);
     switchTab('historico',document.querySelector('nav button[data-tab=historico]'));
@@ -1558,7 +1559,7 @@ function edPick(id){
 }
 function edClearSel(){_edSel=null;renderLineup();}
 function toggleLineupEdit(){lineupEdit=!lineupEdit;_edSel=null;renderLineup();}
-let escalaViewId=null;
+let escalaViewId=null,_escaLastLatest=null;
 function escalaMatches(){
   return db.matches.filter(m=>m.lineup&&m.lineup.teams&&(isAdmin||m.escalaPub!==false)).slice()
     .sort((a,b)=>(a.date<b.date?1:a.date>b.date?-1:0)||(a.id<b.id?1:-1));
@@ -1566,7 +1567,9 @@ function escalaMatches(){
 function currentEscalaMatch(){
   const list=escalaMatches();
   if(!list.length)return null;
-  return (escalaViewId&&list.find(m=>m.id===escalaViewId))||list[0];
+  const latest=list[0];
+  if(_escaLastLatest!==latest.id){_escaLastLatest=latest.id;escalaViewId=null;}
+  return (escalaViewId&&list.find(m=>m.id===escalaViewId))||latest;
 }
 function onEscalaDateChange(val){escalaViewId=val;_escEdSel=null;renderEscalaDia();}
 function renderEscalaDia(){
@@ -1987,7 +1990,7 @@ async function uploadPhoto(id,file){
 /* ---------- craque do jogo ---------- */
 const CRAQUE_OPEN_MIN=21*60+30;
 const CRAQUE_CLOSE_MIN=22*60+30;
-let _craqueTimer=null,_pvCraque=null,craqueViewId=null;
+let _craqueTimer=null,_pvCraque=null,craqueViewId=null,_craqueLastLatest=null;
 function spNowParts(){
   const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
   const p={};fmt.formatToParts(new Date()).forEach(x=>{if(x.type!=='literal')p[x.type]=x.value;});
@@ -1999,7 +2002,11 @@ function craqueMatches(){
 }
 function craqueMatch(){
   const list=craqueMatches();
-  if(list.length)return (craqueViewId&&list.find(m=>m.id===craqueViewId))||list[0];
+  if(list.length){
+    const latest=list[0];
+    if(_craqueLastLatest!==latest.id){_craqueLastLatest=latest.id;craqueViewId=null;}
+    return (craqueViewId&&list.find(m=>m.id===craqueViewId))||latest;
+  }
   if(location.protocol==='file:')return previewCraqueMatch();
   return null;
 }
